@@ -1,0 +1,34 @@
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+            defaultZone: http://localhost:8761/eureka/
+    instance:
+        hostname: localhost
+        instance-id: ${spring.application.name}:${instanceId:${random.value}}
+
+resilience4j.circuitbreaker:
+  instances:
+    cadastroPacientesCB:
+      registerHealthIndicator: true
+      slidingWindowSize: 8
+      minimumNumberOfCalls: 4
+
+spring.cloud.stream:
+  function:
+    definition: emergenciaService
+  bindings:
+    emergenciaService-in-0:
+      destination: active.reception
+  kafka:
+    bindings:
+      emergenciaService-in-0:
+        consumer:
+          configuration:
+            value:
+              deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    binder:
+      brokers:
+        - localhost:9091
+        - localhost:9092
