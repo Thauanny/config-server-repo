@@ -7,6 +7,9 @@ eureka:
   instance:
     hostname: localhost
     instance-id: ${spring.application.name}:${instanceId:${random.value}}
+    
+server:
+  port: 0
 
 resilience4j:
   circuitbreaker:
